@@ -154,7 +154,7 @@ void loadContacts(struct Contact contacts[], int *numContacts)
     *numContacts = fread(contacts, sizeof(struct Contact), MAX_CONTACTS, fp);
     if (*numContacts < 0)
     {
-        printf("Error: Unable to readfrom file.\n");
+        printf("Error: Unable to read fromfile.\n");
     }
     fclose(fp);
 }
@@ -166,6 +166,7 @@ int main()
     int choice;
     while (1)
     {
+        system("clear"); // or system("cls") on Windows
         printf("\n");
         printf("1. Add contact\n");
         printf("2. Display contacts\n");
@@ -205,6 +206,9 @@ int main()
         default:
             printf("Invalid choice.\n");
         }
+        printf("Press Enter to continue...");
+        getchar();
+        getchar();
     }
     return 0;
 }
