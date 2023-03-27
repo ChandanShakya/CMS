@@ -20,11 +20,23 @@ void addContact(struct Contact contacts[], int *numContacts)
     }
     struct Contact newContact;
     printf("Enter name: ");
-    scanf("%s", newContact.name);
+    if (scanf("%s", newContact.name) != 1)
+    {
+        printf("Error: Invalid input.\n");
+        return;
+    }
     printf("Enter phone number: ");
-    scanf("%s", newContact.phone);
+    if (scanf("%s", newContact.phone) != 1)
+    {
+        printf("Error: Invalid input.\n");
+        return;
+    }
     printf("Enter email address: ");
-    scanf("%s", newContact.email);
+    if (scanf("%s", newContact.email) != 1)
+    {
+        printf("Error: Invalid input.\n");
+        return;
+    }
     contacts[*numContacts] = newContact;
     (*numContacts)++;
     printf("Contact added successfully.\n");
@@ -53,15 +65,27 @@ void updateContact(struct Contact contacts[], int numContacts)
     }
     char name[50];
     printf("Enter name of contact to update: ");
-    scanf("%s", name);
+    if (scanf("%s", name) != 1)
+    {
+        printf("Error: Invalid input.\n");
+        return;
+    }
     for (int i = 0; i < numContacts; i++)
     {
         if (strcmp(contacts[i].name, name) == 0)
         {
             printf("Enter new phone number: ");
-            scanf("%s", contacts[i].phone);
+            if (scanf("%s", contacts[i].phone) != 1)
+            {
+                printf("Error: Invalid input.\n");
+                return;
+            }
             printf("Enter new email address: ");
-            scanf("%s", contacts[i].email);
+            if (scanf("%s", contacts[i].email) != 1)
+            {
+                printf("Error: Invalid input.\n");
+                return;
+            }
             printf("Contact updated successfully.\n");
             return;
         }
@@ -78,7 +102,11 @@ void deleteContact(struct Contact contacts[], int *numContacts)
     }
     char name[50];
     printf("Enter name of contact to delete: ");
-    scanf("%s", name);
+    if (scanf("%s", name) != 1)
+    {
+        printf("Error: Invalid input.\n");
+        return;
+    }
     for (int i = 0; i < *numContacts; i++)
     {
         if (strcmp(contacts[i].name, name) == 0)
@@ -104,7 +132,12 @@ void saveContacts(struct Contact contacts[], int numContacts)
         printf("Error: Unable to open file.\n");
         return;
     }
-    fwrite(contacts, sizeof(struct Contact), numContacts, fp);
+    if (fwrite(contacts, sizeof(struct Contact), numContacts, fp) != numContacts)
+    {
+        printf("Error: Unable to write to file.\n");
+        fclose(fp);
+        return;
+    }
     fclose(fp);
     printf("Contacts saved to file.\n");
 }
@@ -118,10 +151,12 @@ void loadContacts(struct Contact contacts[], int *numContacts)
         printf("Error: Unable to open file.\n");
         return;
     }
-    fread(contacts, sizeof(struct Contact), MAX_CONTACTS, fp);
     *numContacts = fread(contacts, sizeof(struct Contact), MAX_CONTACTS, fp);
+    if (*numContacts < 0)
+    {
+        printf("Error: Unable to readfrom file.\n");
+    }
     fclose(fp);
-    printf("Contacts loaded from file.\n");
 }
 
 int main()
@@ -140,7 +175,11 @@ int main()
         printf("6. Load contacts from file\n");
         printf("7. Exit\n");
         printf("Enter choice: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1)
+        {
+            printf("Error: Invalid input.\n");
+            continue;
+        }
         switch (choice)
         {
         case 1:
