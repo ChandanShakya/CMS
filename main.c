@@ -83,7 +83,11 @@ void clearScreen() {
 #ifdef _WIN32
 	system("cls");
 #else
-	system("clear");
+	int ret = system("clear");
+    if (ret == -1) {
+        perror("system");
+        exit(EXIT_FAILURE);
+    }
 #endif
 }
 
